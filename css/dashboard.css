@@ -1,0 +1,278 @@
+#profile{
+    width: 80vw;
+    flex-direction: row;
+    /* padding: 1rem; */
+    padding: 0;
+    /* padding-top: 1rem; */
+    /* padding-bottom: 1rem; */
+    /* padding-right: 1.5rem; */
+    margin-top: 5rem;
+    position: relative;
+
+}
+#contact-info{
+    display: flex;
+    margin-top: 2rem;
+    gap: 1.5rem;
+    width: 66%;
+    padding-bottom: 2rem;
+}
+#contact-info .info-field{
+    width: 50%;
+}
+.navbar-bottom{
+    justify-content: end !important;
+}
+.username{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.side-panel-heading{
+    padding-left: 1.5rem;
+    padding-top: 1rem;
+}
+#sidepanel-heading{
+    padding-top: 1rem;
+}
+.side-panel{
+    width: 25%;
+    border-right: 0.5px solid var(--border-strong);
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    padding-left: 0;
+}
+
+.link-container{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.link-container a{
+    padding: 1.5rem 1.5rem;
+    justify-content: left;
+    border-radius: 0;
+    color: var(--text-color);
+    font-size: medium;
+}
+#profile-details-heading{
+    margin-top: 2rem;
+}
+.main-panel{
+    flex: 1;
+    /* padding-left: 1.5rem; */
+}
+#main-upper{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+#profile-photo-section{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center ;
+    margin-top: 1.5rem;
+}
+.profile-image{
+    width: 5.5rem;
+    height: 5.5rem;
+}
+.profile-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 999px ;
+}
+#edit-avatar-btn,
+#edit-password-btn,
+#submit-cancel-btn,
+#submit-btn{
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    height: 3rem;
+    padding: 0 1.5rem;
+    font-size: medium;
+    font-weight: 500;
+}
+#submit-btn{
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+}
+.change-avatar-part{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 11rem;
+}
+
+
+#delete-avatar-btn{
+    color: oklch(0.5829 0.1941 25.59);
+    height: 3rem;
+    padding: 0 1.7rem;
+    font-size: medium;
+    
+}
+#delete-avatar-btn:hover{
+    background-color: oklch(0.5829 0.1941 25.59);
+    color: oklch(0.9851 0 0);
+}
+
+.info-field{
+    width: 33%;
+    position: relative;
+}
+#business-info .input{
+    width: 100%;
+}
+
+#business-info{
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+#business-profile-heading{
+    margin-top: 2rem;
+}
+
+p{
+    margin-bottom: 0.7rem;
+}
+
+.email-info-heading{
+    margin-top: 1.5rem;
+}
+
+.email-info-heading p{
+    margin-top: 0.5rem;
+}
+
+.email-input{
+    width: 32%;
+    margin-top: 1.5rem;
+}
+
+.email-input .input{
+    width: 100%;
+}
+
+#password-info{
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+}
+#edit-password-btn{
+    width: 12rem;
+}
+#edit-password-fields{
+    display: flex;
+    gap: 1.5rem;
+}
+#edit-password-fields .input{
+    width: 100%;
+}
+.bg-optionSelected{
+    /* background-color: #066fd1; */
+    background-color: oklab(0.546 -0.046941 -0.165886 / 0.12);
+}
+#submit-part{
+    border-top: 1px solid var(--border-strong);
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    justify-content: end;
+    padding-right: 1.5rem;
+}
+#edit-mobile-part{
+    margin-bottom: 1.5rem;
+}
+#submit-part .btn-container{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dropdown-open{
+    height: 50px !important;
+
+}
+form{
+    all: unset;
+}
+
+#edit-avatar-error{
+    top: 100%;
+}
+
+
+#mainHeading{
+    position: absolute;
+    left: 0;
+    top: -3rem;
+    z-index: 5;
+}
+
+@media screen and (max-width: 1200px){
+    #profile{
+        width: 80%;
+    }
+    .email-input{
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 991px){
+    #profile{
+        width: 90%;
+    }
+    .email-input{
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 766px){
+    #profile{
+        flex-direction: column;
+        gap: 2rem;
+    }
+    .side-panel{
+        width: 100%;
+    }
+    .info-field{
+        width: 100%;
+    }
+    #business-info{
+        flex-direction: column;
+        width: 100%;
+    }
+    .email-input{
+        width: 60%;
+    }
+    #edit-password-fields{
+        flex-direction: column;
+    }
+    .side-panel{
+        border-right: none;
+    }
+    #contact-info{
+        width: 100%;
+        flex-direction: column;
+        margin-top: 1.5rem;
+    }
+    #contact-info .info-field{
+        width: 100%;
+    }
+    .profile-image{
+        width: 5rem;
+        height: 5rem;
+    }
+    #profile-photo-section {
+        gap: 1rem;
+    }
+
+
+}

@@ -1,0 +1,73 @@
+
+
+#editPassword-form{
+    position: relative;
+    z-index: 5;
+    width: 30vw;
+    opacity: 1;
+    gap: 3rem;
+}
+.info-field{
+    display: flex;
+    flex-direction: column  ;
+}
+
+#editPassword-save-btn{
+    height: 3rem;
+}
+
+.input{
+    width: 100%;
+}
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper .input {
+    padding-right: 40px; 
+}
+
+.input-wrapper i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+@media screen and (max-width: 1440px){
+    #editPassword-form{
+        width: 40vw;
+    }
+}
+@media screen and (max-width: 1200px){
+    #editPassword-form{
+        width: 50vw;
+    }
+}
+@media screen and (max-width: 991px){
+    #editPassword-form{
+        width: 60vw;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .navbar{
+        width: 90%;
+    }
+    #editPassword-form{
+        width: 70vw;
+    }
+}
+@media screen and (max-width: 540px){
+    #editPassword-form{
+        width: 80vw;
+    }
+}
+
+@media screen and (max-width: 400px){
+    #editPassword-form{
+        width: 90vw;
+    }
+}

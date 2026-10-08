@@ -4,7 +4,7 @@
 require_once(__DIR__."/../Controller.php");
 require_once(__DIR__."/../../models/auth/LoginModel.php");
 
-class LoginControllerPost extends Controller
+class LoginControllerPOST extends Controller
 {
     private string $email;
     private string $password;
@@ -13,10 +13,10 @@ class LoginControllerPost extends Controller
     private $model;
     
 
-    public function __construct(string $email, string $password)
+    public function __construct(array $data)
     {
-        $this->email = $email;
-        $this->password = $password;
+        $this->email = $data["email"];
+        $this->password = $data["password"];
         $this->model = new LoginModel();
         $this->errors = [];
         $this->old = [];
@@ -91,13 +91,12 @@ class LoginControllerPost extends Controller
     private function success(){
         $user = $this->model->getUser($this->email);
         
-        session_start();
         session_regenerate_id(true);
         $_SESSION["id"] = $user["id"];
         $_SESSION["email"] = $user["email"];
         $_SESSION["role"] = $user["role"];
 
-        if($user["role"] === 2){
+        if((int)$user["role"] === 2){
             $this->redirect("/projects/xitTask_OOP/admin");
             exit();
         }

@@ -1,7 +1,4 @@
 <?php
-    session_start();
-    
-    $BASE_PATH = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
 
     function errClass(array $errors, string $field): string {
         return isset($errors[$field]) ? ' input-error' : '';
@@ -11,7 +8,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+    <?php include(__DIR__."/../includes/headContent.php"); ?>
+    <link rel="stylesheet" href="/projects/xitTask_OOP/css/login.css">
 </head>
 <body>
     <main>
@@ -30,7 +28,7 @@
 
                 <div class="stack">
                     <label class="label">Email Address: </label>
-                    <input spellcheck="false" id="login-email" name="email" type="text" value="<?php echo htmlspecialchars($old["email"]) ?>" class="input<?= errClass($errors, 'email') ?>" placeholder="your@email.com"/>
+                    <input spellcheck="false" id="login-email" name="email" type="text" value="<?php echo htmlspecialchars($old["email"]??"") ?>" class="input<?= errClass($errors, 'email') ?>" placeholder="your@email.com"/>
                     <p id="login-email-error"><?php echo htmlspecialchars($errors["email"] ?? "") ?></p>
                 </div>
                 

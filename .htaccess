@@ -1,0 +1,10 @@
+RewriteEngine On
+
+
+# Allow direct access to public assets
+RewriteCond %{REQUEST_URI} /(css|js|assets|uploads)/
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Everything else goes through index.php
+RewriteRule ^ index.php [L]

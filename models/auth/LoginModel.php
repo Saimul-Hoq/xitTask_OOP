@@ -1,24 +1,10 @@
 <?php
 
-require_once(__DIR__."/../../config/Db.php");
+require_once(__DIR__."/../Model.php");
 
-class LoginModel 
+class LoginModel extends Model
 {
-    private $conn;
-
-    public function __construct()
-    {
-        $this->conn = (new Db())->getConnection();
-    }
-    
-    public function verifyDbConnection(){
-        if($this->conn === null){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
+   
 
     public function getUser(string $email){
 

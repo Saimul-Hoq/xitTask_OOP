@@ -97,11 +97,11 @@ class LoginControllerPOST extends Controller
         $_SESSION["role"] = $user["role"];
 
         if((int)$user["role"] === 2){
-            $this->redirect("/projects/xitTask_OOP/admin");
+            $this->redirect("/projects/xitTask_OOP/user/profile");
             exit();
         }
         else{
-            $this->redirect("/projects/xitTask_OOP/dashboard");
+            $this->redirect("/projects/xitTask_OOP/admin");
             exit();
         }
     }

@@ -1,18 +1,6 @@
 <?php
-    if(!isset($_SESSION["id"])){
-        header("Location: /projects/xitTask/");
-        exit();
-    }
-
-    require_once(__DIR__."/../config/database.php");
-    require_once(__DIR__."/../models/user_model.php");
-    $user = getUser($conn, $_SESSION["id"]);
-    if (!$user) {
-        session_destroy();
-        header("Location: /projects/xitTask/");
-        exit();
-    }
-    
+   
+   $user = $user??[];
 ?>
 
 
@@ -35,13 +23,13 @@
             </div>
             
             <div class="navbar-user-image">
-                 <img src="/projects/xitTask/uploads/<?= htmlspecialchars($user["avatar"]) ?>" alt="Profile Picture">
+                 <img src="/projects/xitTask_OOP/uploads/<?= htmlspecialchars($user["avatar"]) ?>" alt="Profile Picture">
             </div>
            <div class="navbar-user-info">
                 <p class="text-normal"><?php echo htmlspecialchars($user["name"]) ?></p>
                 <p class="text-gray text-normal text-sm"><?php 
-                    if($user["role"]===1) {echo "Admin";}
-                    elseif($user["role"]===2) {echo "User";}
+                    if((int)$user["role"]===1) {echo "Admin";}
+                    elseif((int)$user["role"]===2) {echo "User";}
                 ?></p>
            </div>
 
@@ -54,7 +42,7 @@
             <button onclick="editAccountFunc(this)" class="btn-icon text-gray text-md"><i class="fa-regular fa-pen-to-square"></i>Edit</button>
         </div> --> 
         <div class="navbar-end">
-            <a class="btn-icon" href="/projects/xitTask/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout </a>
+            <a class="btn-icon" href="/projects/xitTask_OOP/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout </a>
         </div>
     </section>
 
@@ -62,7 +50,7 @@
 
      <section id="dropdown-user"  class="navbar navbar-dropdown">
          <!-- <div class="navbar-start">
-            <a class="btn-icon" href="/projects/xitTask/admin/userList">
+            <a class="btn-icon" href="/projects/xitTask_OOP/admin/userList">
                 <div class="logo-text">
                     <i class="fa-regular fa-pen-to-square"></i> Edit
                 </div>
@@ -74,7 +62,7 @@
 
         </div> -->
         <div class="navbar-end">
-            <a class="btn-icon" href="/projects/xitTask/logout">
+            <a class="btn-icon" href="/projects/xitTask_OOP/logout">
                 <div class="logo-text">
                     <i class="fa-solid fa-right-from-bracket"></i>Logout
                 </div>
@@ -86,7 +74,6 @@
     </section>
 </section>
 
-<script src="/projects/xitTask/js/navbar.js"></script>
-<script src="/projects/xitTask/js/mode.js"></script>
 
-<!-- <script src="/projects/xitTask/js/dashboard.js"></script> -->
+
+<!-- <script src="/projects/xitTask_OOP/js/dashboard.js"></script> -->

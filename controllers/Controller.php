@@ -15,8 +15,9 @@ class Controller
 
     protected function requireLogin(): void
     {
-        if (empty($_SESSION['id'])) {
-            $this->redirect('/projects/xitTask_OOP/login');
+        if (!isset($_SESSION['id']) || empty($_SESSION["id"])) {
+            $this->redirect('/projects/xitTask_OOP/');
+            exit();
         }
     }
 }

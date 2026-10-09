@@ -19,7 +19,7 @@ class Router
         if (isset($this->routes[$path])) {
             [$folder, $class] = $this->routes[$path];
             $class = $class.$method;
-            $data = ($method === "POST")? $_POST : $_GET;
+            $data = ($method === "POST") ? array_merge($_POST, $_FILES) : $_GET;
             $controller = new $class($data);
             $controller->index();
             

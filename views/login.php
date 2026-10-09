@@ -3,6 +3,9 @@
     function errClass(array $errors, string $field): string {
         return isset($errors[$field]) ? ' input-error' : '';
     }
+
+    $errors = $errors ?? [];
+    $old = $old?? [];
 ?>
 
 <!DOCTYPE html>
@@ -62,9 +65,10 @@
             <p id="signup" class="text-center">Don't have account yet? <a href="/projects/xitTask_OOP/signup">signup</a> </p>
         </section>
         
-        <script src="/projects/xitTask_OOP/js/login.js"></script>
-        <script src="/projects/xitTask_OOP/js/mode.js"></script>
+        
 
     </main>
+    <script src="/projects/xitTask_OOP/js/login.js"></script>
+    <script src="/projects/xitTask_OOP/js/mode.js"></script>
 </body>
 </html>

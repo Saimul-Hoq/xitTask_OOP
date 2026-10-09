@@ -3,7 +3,7 @@
 require_once(__DIR__."/../Controller.php");
 
 
-class LoginControllerGET extends Controller
+class SignupControllerGET extends Controller
 {
     private array $data;
 
@@ -14,7 +14,7 @@ class LoginControllerGET extends Controller
 
     public function index()
     {
-        $this->view("login.php", ["errors" => []]);
+        $this->view("signup.php", ["errors" => []]);
         exit();
     }
 }

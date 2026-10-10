@@ -1,7 +1,6 @@
 //Change Avatar
 const editAvatarBtn = document.getElementById("edit-avatar-btn");
 const editAvatarInput = document.getElementById("edit-avatar");
-const openAvatar = document.getElementById("openAvatar");
 
 function openEditAvatar(e){
     if(editAvatarBtn.innerText === "Change Avatar"){
@@ -13,7 +12,6 @@ function openEditAvatar(e){
         editAvatarBtn.innerText = "Change Avatar";
         editAvatarInput.classList.add("hidden");
         editAvatarInput.setAttribute("disabled", "");
-        openAvatar.textContent = "false";
         document.getElementById("edit-avatar-error").textContent = "";
         editAvatarInput.classList.remove("input-error");
     }
@@ -23,7 +21,6 @@ function openEditAvatar(e){
 //Change Password 
 const editPasswordBtn = document.getElementById("edit-password-btn");
 const editPasswordSection = document.getElementById("edit-password-fields");
-const openPassword = document.getElementById("openPassword");
 function removeDisabled(){
     document.querySelectorAll("#edit-password-fields .input").forEach((input) => {
         input.removeAttribute("disabled");
@@ -52,14 +49,15 @@ function openEditPassword(e){
         editPasswordBtn.innerText = "Set new password";
         editPasswordSection.classList.add("hidden");
         addDisabled();
-        openPassword.textContent = "false";
         removeErrorMessage();
     }
 }
 
-if(openPassword.textContent === "true"){
+const editForm = document.getElementById("edit-form");
+
+if (editForm.dataset.openPassword === "true") {
     openEditPassword();
 }
-if(openAvatar.textContent === "true"){
+if (editForm.dataset.openAvatar === "true") {
     openEditAvatar();
 }

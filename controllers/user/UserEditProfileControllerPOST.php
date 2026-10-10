@@ -50,50 +50,87 @@ class UserEditProfileControllerPOST extends Controller
             $this->fail();
         }
 
-        $this->isInputTaken();
+        $this->update();
 
-        if(!$this->saveAvatar()){
-            $this->fail();
-        }
-
-        $this->request();
-
+        $this->success();
     }
 
-    private function request(){
-
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-
-        $check = $this->model->createSignupRequest( $this->id,  $this->email,  $this->password,  $this->name,  $this->mobile,  $this->address,  $this->avatarFilename,  $this->role);
-
-        if($check === false){
-            $this->fail(true);
-        }
-        else{
-            $this->success();
-        }
-        
-    }
-
-    private function isInputTaken()
+    private function update()
     {
-        $checkEmail = $this->model->emailExists($this->email);
-        if($checkEmail === false){
-            $this->fail(true);
+        $this->updateAddress();
+        $this->updateAvatar();
+        $this->updateMobile();
+        $this->updateName();
+        $this->updatePassword();
+    }
+
+    private function updateAvatar()
+    {
+        if ($this->avatar === null) {
+            return true;
         }
-        elseif($checkEmail){
-            $this->errors["email"] = "This email is already in use";
+
+        if ($this->saveAvatar() === false) {
+            $this->errors["disk"] = "Failed to save avatar. Please try again later";
             $this->fail();
         }
 
-        $checkMobile = $this->model->mobileExists($this->mobile);
-        if($checkMobile === false){
+        if ($this->model->editAvatar($this->id, $this->avatarFilename) === false) {
             $this->fail(true);
         }
-        elseif($checkMobile){
-            $this->errors["mobile"] = "This number is already in use";
-            $this->fail();
+
+        return true;
+    }
+
+    private function updateAddress()
+    {
+        if($this->model->editAddress($this->id, $this->address) === false){
+            $this->fail(true);
         }
+
+        return true;
+    }
+
+
+    private function updateName()
+    {
+        if($this->model->editName($this->id, $this->name) === false){
+            $this->fail(true);
+        }
+
+        return true;
+    }
+
+    private function updatePassword()
+    {
+        if($this->currentPassword===null){
+            return true;
+        }
+
+        $this->newPassword = password_hash($this->newPassword, PASSWORD_DEFAULT);
+        if($this->model->editPassword($this->id, $this->newPassword) === false){
+            $this->fail(true);
+        }
+
+        return true;
+    }
+
+    private function updateMobile()
+    {
+        $currentMobile = $this->model->getUserMobile($this->id);
+        if($currentMobile === false){
+            $this->fail(true);
+        }
+        elseif($currentMobile === $this->mobile){
+            return true;
+        }
+
+
+        if($this->model->editMobile($this->id, $this->mobile) === false){
+            $this->fail(true);
+        }
+
+        return true;
     }
 
     private function validate() : bool
@@ -110,22 +147,48 @@ class UserEditProfileControllerPOST extends Controller
             $check = false;
         }
 
-        //Email
-        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            $this->errors["email"] = "Invalid email format.";
-            $check = false;
-        } 
-
-        //Password
-        if (strlen($this->password) < 4) {
-            $this->errors["password"] = "Password must be at least 4 characters.";
+        //Address
+        if(!preg_match('/^[a-zA-Z0-9 ,.\-\/#]+$/', $this->address)){
+            $this->errors["address"] = "Address cannot contain special characters.";
             $check = false;
         }
 
+
+        //Password
+        if($this->newPassword !== null)
+        {
+            $password = $this->model->getUserPassword($this->id);
+            if (strlen($this->newPassword) < 4) {
+                $this->errors["newPassword"] = "Password must be at least 4 characters.";
+                $check = false;
+            }
+            elseif($password === false){
+                $this->fail(true);
+            }
+            elseif(!password_verify($this->currentPassword, $password)){
+                $this->errors["currentPassword"] = "Current password is not correct";
+                $check = false;
+            }
+            elseif($this->newPassword !== $this->confirmPassword){
+                $this->errors["confirmPassword"] = "Password is not matched";
+                $check = false;
+            }
+        }
+        
+
+
         //Mobile
+        $checkMobile = $this->model->isMobileExists($this->mobile, $this->id);
         if (!preg_match('/^01[0-9]{9}$/', $this->mobile)) {
             $this->errors["mobile"] = "Invalid Phone Number";
             $check = false;
+        }
+        elseif($checkMobile === false){
+            $this->fail(true);
+        }
+        else if($checkMobile){
+            $this->errors["mobile"] = "This mobile is already in use";
+            $this->fail();
         }
 
         //Avatar
@@ -164,15 +227,16 @@ class UserEditProfileControllerPOST extends Controller
 
     private function saveAvatar(): bool
     {
-        if ($this->avatar === null || $this->avatar['error'] === UPLOAD_ERR_NO_FILE) {
+        if ($this->avatar === null) {
             return true;
         }
 
         $destination = __DIR__ . "/../../uploads/" . $this->avatarFilename;
+        
 
         if (!move_uploaded_file($this->avatar['tmp_name'], $destination)) {
             error_log("saveAvatar Error: failed to move uploaded file to " . $destination);
-            $this->errors["disk"] = "Failed to save avatar. Please try again later";
+            
             return false;
         }
 
@@ -223,9 +287,21 @@ class UserEditProfileControllerPOST extends Controller
         return $check;
     }
 
+    public function getUser()
+    {
+        $user = $this->model->getUser($this->id);
+        if($user === false || $user === null){
+
+            $this->redirect("/projects/xitTask_OOP/logout");
+            exit();
+        }
+        return $user;
+    }
+
     private function success()
     {
-        $this->view("signup.php", ["errors" => [], "success" => true]);
+        $user = $this->getUser();
+        $this->view("userEditProfile.php", ["errors" => [], "success" => true, "user" => $user]);
         exit();
     }
 
@@ -234,13 +310,23 @@ class UserEditProfileControllerPOST extends Controller
         if($db){
             $this->errors["db"] = "Database Connection Failed. Please try again later";
         }
-        $this->old["email"] = $this->email;
         $this->old["name"] = $this->name;
         $this->old["mobile"] = $this->mobile;
         $this->old["address"] = $this->address;
 
-
-        $this->view("signup.php", ["errors" => $this->errors, "old" => $this->old, "success" => false]);
+        $user = $this->getUser();
+        $this->view("userEditProfile.php", 
+            [
+                "errors" => $this->errors,
+                "old" => $this->old,
+                "success" => false,
+                "user" => $user,
+                "open"    => [
+                    "password" => $this->currentPassword !== null,
+                    "avatar"   => $this->avatar !== null,
+                    ]
+            ]
+        );
         exit();
     }
 

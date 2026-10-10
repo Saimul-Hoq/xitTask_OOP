@@ -26,7 +26,7 @@ class UserEditProfileModel extends Model
         }
     }
 
-    public function updateUserAvatar(string $id, string $avatar)
+    public function editAvatar(string $id, string $avatar)
     {
         $stmt = null;
         try{
@@ -161,7 +161,7 @@ class UserEditProfileModel extends Model
         }
     }
 
-    public function updateUserName(string $id, string $name)
+    public function editName(string $id, string $name)
     {
         $stmt = null;
         try{
@@ -206,7 +206,7 @@ class UserEditProfileModel extends Model
         }
     }
 
-    public function editUserPassword(string $id, string $hashedPassword)
+    public function editPassword(string $id, string $hashedPassword)
     {
         $stmt = null;
         try{

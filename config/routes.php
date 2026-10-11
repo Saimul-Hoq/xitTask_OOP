@@ -7,6 +7,6 @@ return [
     "/projects/xitTask_OOP/user/profile" => ["user", "UserProfileController"],
     "/projects/xitTask_OOP/user/editProfile" => ["user", "UserEditProfileController"],
     "/projects/xitTask_OOP/admin/userList" => ["admin", "AdminUserListController"],
-    "/projects/xitTask_OOP/admin/requests" => ["admin", "AdminRequestsController"]
-
+    "/projects/xitTask_OOP/admin/requests" => ["admin", "AdminRequestsController"],
+    "/projects/xitTask_OOP/admin/editPassword" => ["admin", "AdminEditPasswordController"]
 ];

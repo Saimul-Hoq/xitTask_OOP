@@ -43,7 +43,7 @@
 
             <a class="btn-icon menu <?=  $currentPath==="/projects/xitTask_OOP/admin/requests"? " active": ""  ?>" href="/projects/xitTask_OOP/admin/requests"><i class="fa-regular fa-bell "></i>Requests</a>
 
-            <a class="btn-icon menu <?=  $currentPath==="/projects/xitTask_OOP/admin/profile"? " active": ""  ?>" href="/projects/xitTask_OOP/admin/profile"><i class="fa-solid fa-unlock-keyhole"></i>Password</a>
+            <a class="btn-icon menu <?=  $currentPath==="/projects/xitTask_OOP/admin/editPassword"? " active": ""  ?>" href="/projects/xitTask_OOP/admin/editPassword"><i class="fa-solid fa-unlock-keyhole"></i>Password</a>
         </div>
         <div class="navbar-end">
             <a class="btn-icon" href="/projects/xitTask_OOP/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout </a>
@@ -72,7 +72,7 @@
                     <i class="fa-solid fa-angle-right"></i>
                 </div>
             </a>
-            <a class="btn-icon" href="/projects/xitTask_OOP/admin/profile">
+            <a class="btn-icon" href="/projects/xitTask_OOP/admin/editPassword">
                 <div class="logo-text">
                     <i class="fa-solid fa-unlock-keyhole"></i>Password
                 </div>

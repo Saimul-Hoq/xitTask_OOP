@@ -1,8 +1,10 @@
 <?php 
+   
     $errors = $errors??[];
     function errClass(array $errors, string $field): string {
         return isset($errors[$field]) ? ' input-error' : '';
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +20,7 @@
         <?php include(__DIR__."/../includes/navbar.php"); ?>
     </header>
     <main>
+        <?php include(__DIR__."/../includes/alert.php"); ?>
         <section>
         <form id="editPassword-form" class="edit-form" action="/projects/xitTask_OOP/admin/editPassword" method="post">
             <div class="info-field">
@@ -74,5 +77,7 @@
     <script src="/projects/xitTask_OOP/js/passwordField.js"></script>
     <script src="/projects/xitTask_OOP/js/navbar.js"></script>
     <script src="/projects/xitTask_OOP/js/mode.js"></script>
+    <script src="/projects/xitTask_OOP/js/alert.js"></script>
+    
 </body>
 </html>

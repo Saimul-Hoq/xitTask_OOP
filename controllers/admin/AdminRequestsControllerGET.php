@@ -9,12 +9,16 @@ class AdminRequestsControllerGET extends Controller
     private array $data;
     private array $user;
     private array $requests;
+    private string $status;
+    private string $msg;
     private $model;
 
     public function __construct(array $data)
     {
         $this->id = $_SESSION["id"]??"";
         $this->data = $data;
+        $this->status = $data["flash"]["status"] ?? "failed";
+        $this->msg = $data["flash"]["msg"] ?? "";
         $this->model = new AdminRequestsModel();
     }
 
@@ -23,7 +27,7 @@ class AdminRequestsControllerGET extends Controller
         $this->requireAdmin();
 
         if(!$this->model->verifyDbConnection()){
-            $this->fail();
+            $this->dbFail();
         }
 
        $this->showRequests();
@@ -33,27 +37,23 @@ class AdminRequestsControllerGET extends Controller
 
     private function showRequests()
     {
-        $user = $this->model->getUser($this->id);
+        
         $requests = $this->model->getAllRequests();
 
-        if(!is_array($user) || !is_array($requests)){
-            $this->fail();
+        if(!is_array($requests)){
+            $this->dbFail();
         }
 
-        $this->user = $user;
+        $this->user = $this->getCurrentUser($this->id, $this->model);
         $this->requests = $requests;
     }
 
    
     private function success()
     {
-        $this->view("adminRequests.php", ["errors" => [], "user" => $this->user, "requests" => $this->requests]);
+        $this->view("adminRequests.php", ["errors" => [], "user" => $this->user, "requests" => $this->requests, "status" => $this->status, "msg" => $this->msg]);
         exit();
     }
 
-    private function fail(bool $db = false)
-    {
-        $this->redirect("/projects/xitTask_OOP/");
-        exit();
-    }
+   
 }

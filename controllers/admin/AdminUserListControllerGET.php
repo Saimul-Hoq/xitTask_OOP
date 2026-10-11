@@ -9,12 +9,16 @@ class AdminUserListControllerGET extends Controller
     private array $data;
     private array $user;
     private array $users;
+    private string $status;
+    private string $msg;
     private $model;
 
     public function __construct(array $data)
     {
         $this->id = $_SESSION["id"]??"";
         $this->data = $data;
+        $this->status = $data["flash"]["status"] ?? "failed";
+        $this->msg = $data["flash"]["msg"] ?? "";
         $this->model = new AdminUserListModel();
     }
 
@@ -23,7 +27,7 @@ class AdminUserListControllerGET extends Controller
         $this->requireAdmin();
 
         if(!$this->model->verifyDbConnection()){
-            $this->fail();
+            $this->dbFail();
         }
 
         $this->showUser();
@@ -33,25 +37,21 @@ class AdminUserListControllerGET extends Controller
 
     private function showUser()
     {
-        $user  = $this->model->getUser($this->id);
+        
         $users = $this->model->getAllUsers();
 
-        if (!is_array($user) || !is_array($users)) {
-            $this->fail();
+        if (!is_array($users)) {
+            $this->dbFail();
         }
 
-        $this->user  = $user;
+        $this->user  = $this->getCurrentUser($this->id, $this->model);
         $this->users = $users;
     }
     private function success()
     {
-        $this->view("adminUserList.php", ["errors" => [], "user" => $this->user, "users" => $this->users]);
+        $this->view("adminUserList.php", ["errors" => [], "user" => $this->user, "users" => $this->users, "status" => $this->status, "msg" => $this->msg]);
         exit();
     }
 
-    private function fail(bool $db = false)
-    {
-        $this->redirect("/projects/xitTask_OOP/");
-        exit();
-    }
+   
 }

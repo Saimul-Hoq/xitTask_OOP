@@ -22,7 +22,7 @@ class AdminUserListControllerPOST extends Controller
 
         if(!$this->model->verifyDbConnection())
         {
-            $this->fail(true);
+            $this->dbFail();
         }
 
         $this->deleteUser();
@@ -34,7 +34,7 @@ class AdminUserListControllerPOST extends Controller
     private function deleteUser()
     {
         if($this->model->deleteUser($this->userId) === false){
-            $this->fail(true);
+            $this->dbFail();
         }
 
         return true;
@@ -42,16 +42,10 @@ class AdminUserListControllerPOST extends Controller
 
     private function success()
     {
+        $this->flash(["status" => "success", "msg" => "User has been deleted"]);
         $this->redirect("/projects/xitTask_OOP/admin/userList");
         exit();
     }
 
-    private function fail($db = false)
-    {   
-        if($db){
-            $this->errors["db"] = "Database Connection Failed. Please try again later";
-        }
-        $this->redirect("/projects/xitTask_OOP/admin/userList");
-        exit();
-    }
+    
 }

@@ -26,7 +26,7 @@ class LoginControllerPOST extends Controller
     {
         if(!$this->model->verifyDbConnection())
         {
-            $this->fail(true);
+            $this->dbFail();
         }
 
         if($this->isEmpty())
@@ -37,7 +37,7 @@ class LoginControllerPOST extends Controller
         $requestedUser = $this->model->getUserFromRequest($this->email);
         if($requestedUser === false)
         {
-            $this->fail(true);
+            $this->dbFail();
         }
         else if($requestedUser)
         {
@@ -48,7 +48,7 @@ class LoginControllerPOST extends Controller
         $user = $this->model->getUserbyEmail($this->email);
         if($user === false)
         {
-            $this->fail(true);
+            $this->dbFail();
         }
         else if($user === null){
             $this->errors["email"] = "Email or Password incorrect";
@@ -78,11 +78,8 @@ class LoginControllerPOST extends Controller
         return $check;
     }
 
-    private function fail($db = false)
+    private function fail()
     {   
-        if($db){
-            $this->errors["db"] = "Database Connection Failed. Please try again later";
-        }
         $this->old["email"] = $this->email;
         $this->view("login.php", ["errors" => $this->errors, "old" => $this->old]);
         exit();

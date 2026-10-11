@@ -8,12 +8,16 @@ class AdminEditPasswordControllerGET extends Controller
     private string $id;
     private array $data;
     private array $user;
+    private string $status;
+    private string $msg;
     private $model;
 
     public function __construct(array $data)
     {
         $this->id = $_SESSION["id"] ?? "";
         $this->data = $data;
+        $this->status = $data["flash"]["status"] ?? "failed";
+        $this->msg = $data["flash"]["msg"] ?? "";
         $this->model = new AdminEditPasswordModel();
     }
 
@@ -22,7 +26,7 @@ class AdminEditPasswordControllerGET extends Controller
         $this->requireAdmin();
 
         if(!$this->model->verifyDbConnection()){
-            $this->fail();
+            $this->dbFail();
         }
 
         $this->getUser();
@@ -32,24 +36,14 @@ class AdminEditPasswordControllerGET extends Controller
 
     private function getUser()
     {
-        $user = $this->model->getUser($this->id);
-        
-        if(!is_array($user)){
-            $this->fail();
-        }
-
-        $this->user = $user;
+        $this->user = $this->getCurrentUser($this->id, $this->model);
     }
 
     private function success()
     {
-        $this->view("adminEditPassword.php", ["errors" => [], "user" => $this->user??[]]);
+        $this->view("adminEditPassword.php", ["errors" => [], "user" => $this->user??[], "status" => $this->status, "msg" => $this->msg]);
         exit();
     }
 
-    private function fail()
-    {
-        $this->redirect("/projects/xitTask_OOP/");
-        exit();
-    }
+    
 }

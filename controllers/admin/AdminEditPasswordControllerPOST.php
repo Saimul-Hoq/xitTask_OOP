@@ -29,7 +29,7 @@ class AdminEditPasswordControllerPOST extends Controller
         $this->requireAdmin();
 
         if(!$this->model->verifyDbConnection()){
-            $this->fail(true);
+            $this->dbFail();
         }  
         
         $this->getUser();
@@ -50,7 +50,7 @@ class AdminEditPasswordControllerPOST extends Controller
         $hashedPssword = password_hash($this->newPassword, PASSWORD_DEFAULT);
 
         if($this->model->editUserPassword($this->id, $hashedPssword) === false){
-            $this->fail(true);
+            $this->dbFail();
         }
 
         return true;
@@ -70,7 +70,7 @@ class AdminEditPasswordControllerPOST extends Controller
 
         $password = $this->model->getUserPassword($this->id);
         if($password === false){
-            $this->fail(true);
+            $this->dbFail();
         }
         if(!password_verify($this->currentPassword, $password)){
             $this->errors["currentPassword"] = "Current password is not correct";
@@ -103,27 +103,19 @@ class AdminEditPasswordControllerPOST extends Controller
 
     private function getUser()
     {
-        $user = $this->model->getUser($this->id);
-        
-        if(!is_array($user)){
-            $this->fail();
-        }
-
-        $this->user = $user;
+        $this->user = $this->getCurrentUser($this->id, $this->model);
     }
 
 
     private function success()
     {
+        $this->flash(["status" => "success", "msg" => "Password Updated Successfully"]);
         $this->redirect("/projects/xitTask_OOP/admin/editPassword");
         exit();
     }
 
-    private function fail($db = false)
+    private function fail()
     {   
-        if($db){
-            $this->errors["db"] = "Database Connection Failed. Please try again later";
-        }
         $this->view("adminEditPassword.php", ["errors" => $this->errors, "user" => $this->user??[]]);
         exit();
     }

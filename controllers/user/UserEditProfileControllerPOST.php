@@ -18,7 +18,7 @@ class UserEditProfileControllerPOST extends Controller
     private array $errors;
     private array $old;
     private $model;
-    private $user;
+    private array $user;
 
     public function __construct(array $data)
     {
@@ -42,10 +42,10 @@ class UserEditProfileControllerPOST extends Controller
         $this->requireLogin();
 
         if(!$this->model->verifyDbConnection()){
-            $this->fail(true);
+            $this->dbFail();
         }
 
-        $this->user = $this->getUser();
+        $this->user = $this->getCurrentUser($this->id, $this->model);
 
         if($this->deleteAvatar === "true"){
             $this->deleteAvatar();
@@ -77,7 +77,7 @@ class UserEditProfileControllerPOST extends Controller
     private function deleteAvatar()
     {
         if ($this->model->editAvatar($this->id, "default.png") === false) {
-            $this->fail(true);
+            $this->dbFail();
         }
 
         $currentAvatarFilename = $this->user["avatar"];
@@ -102,7 +102,7 @@ class UserEditProfileControllerPOST extends Controller
         }
 
         if ($this->model->editAvatar($this->id, $this->avatarFilename) === false) {
-            $this->fail(true);
+            $this->dbFail();
         }
 
         return true;
@@ -111,7 +111,7 @@ class UserEditProfileControllerPOST extends Controller
     private function updateAddress()
     {
         if($this->model->editAddress($this->id, $this->address) === false){
-            $this->fail(true);
+            $this->dbFail();
         }
 
         return true;
@@ -121,7 +121,7 @@ class UserEditProfileControllerPOST extends Controller
     private function updateName()
     {
         if($this->model->editName($this->id, $this->name) === false){
-            $this->fail(true);
+            $this->dbFail();
         }
 
         return true;
@@ -135,7 +135,7 @@ class UserEditProfileControllerPOST extends Controller
 
         $this->newPassword = password_hash($this->newPassword, PASSWORD_DEFAULT);
         if($this->model->editPassword($this->id, $this->newPassword) === false){
-            $this->fail(true);
+            $this->dbFail();
         }
 
         return true;
@@ -145,7 +145,7 @@ class UserEditProfileControllerPOST extends Controller
     {
         $currentMobile = $this->model->getUserMobile($this->id);
         if($currentMobile === false){
-            $this->fail(true);
+            $this->dbFail();
         }
         elseif($currentMobile === $this->mobile){
             return true;
@@ -153,7 +153,7 @@ class UserEditProfileControllerPOST extends Controller
 
 
         if($this->model->editMobile($this->id, $this->mobile) === false){
-            $this->fail(true);
+            $this->dbFail();
         }
 
         return true;
@@ -189,7 +189,7 @@ class UserEditProfileControllerPOST extends Controller
                 $check = false;
             }
             elseif($password === false){
-                $this->fail(true);
+                $this->dbFail();
             }
             elseif(!password_verify($this->currentPassword, $password)){
                 $this->errors["currentPassword"] = "Current password is not correct";
@@ -210,7 +210,7 @@ class UserEditProfileControllerPOST extends Controller
             $check = false;
         }
         elseif($checkMobile === false){
-            $this->fail(true);
+            $this->dbFail();
         }
         else if($checkMobile){
             $this->errors["mobile"] = "This mobile is already in use";
@@ -313,39 +313,29 @@ class UserEditProfileControllerPOST extends Controller
         return $check;
     }
 
-    public function getUser()
-    {
-        $user = $this->model->getUser($this->id);
-        if($user===false || $user === null){
-
-            $this->redirect("/projects/xitTask_OOP/logout");
-            exit();
-        }
-        return $user;
-    }
+    
 
     private function success()
     {
+        $this->flash(["status" => "success", "msg" => "Information updated successfully"]);
         $this->redirect("/projects/xitTask_OOP/user/editProfile");
         exit();
     }
 
-    private function fail($db = false) : void
+    private function fail() : void
     {   
-        if($db){
-            $this->errors["db"] = "Database Connection Failed. Please try again later";
-        }
+        
         $this->old["name"] = $this->name;
         $this->old["mobile"] = $this->mobile;
         $this->old["address"] = $this->address;
 
-        $user = $this->getUser();
+        
         $this->view("userEditProfile.php", 
             [
                 "errors" => $this->errors,
                 "old" => $this->old,
                 "success" => false,
-                "user" => $user,
+                "user" => $this->user,
                 "open"    => [
                     "password" => $this->currentPassword !== null,
                     "avatar"   => $this->avatar !== null,

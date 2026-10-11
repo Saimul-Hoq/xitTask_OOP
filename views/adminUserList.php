@@ -17,6 +17,7 @@
         <?php include(__DIR__."/../includes/navbar.php"); ?>
     </header>
     <main>
+        <?php include(__DIR__."/../includes/alert.php"); ?>
         <div class="table">
             <section class="table-header">
                 <h4>User List</h4>
@@ -70,5 +71,6 @@
     <script src="/projects/xitTask_OOP/js/request.js"></script>
     <script src="/projects/xitTask_OOP/js/navbar.js"></script>
     <script src="/projects/xitTask_OOP/js/mode.js"></script>
+    <script src="/projects/xitTask_OOP/js/alert.js"></script>
 </body>
 </html>

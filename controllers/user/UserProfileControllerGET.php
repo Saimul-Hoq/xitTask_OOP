@@ -6,11 +6,15 @@ require_once(__DIR__."/../../models/user/UserProfileModel.php");
 class UserProfileControllerGET extends Controller
 {
     private array $data;
+    private string $status;
+    private string $msg;
     private $model;
 
     public function __construct(array $data)
     {
         $this->data = $data;
+        $this->status = $data["flash"]["status"] ?? "failed";
+        $this->msg = $data["flash"]["msg"] ?? "";
         $this->model = new UserProfileModel();
     }
 
@@ -28,7 +32,7 @@ class UserProfileControllerGET extends Controller
     {
         $this->requireLogin();
         $user = $this->getUser();
-        $this->view("userProfile.php", ["errors" => [], "user" => $user]);
+        $this->view("userProfile.php", ["errors" => [], "user" => $user, "status" => $this->status, "msg" => $this->msg]);
         exit();
     }
 }

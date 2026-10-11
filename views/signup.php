@@ -25,7 +25,7 @@
 </head>
 <body>
     <main>
-
+        <?php include(__DIR__."/../includes/alert.php"); ?>
         <section id="signup-section">
             
             <nav id="brandLogo"><svg xmlns="http://www.w3.org/2000/svg" width="110" height="32" viewBox="0 0 232 68" class="navbar-brand-image">
@@ -120,5 +120,6 @@
     </main>
     <script src="/projects/xitTask_OOP/js/signup.js"></script>
     <script src="/projects/xitTask_OOP/js/mode.js"></script>
+    <script src="/projects/xitTask_OOP/js/alert.js"></script>
 </body>
 </html>

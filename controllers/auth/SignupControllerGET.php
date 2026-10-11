@@ -6,15 +6,19 @@ require_once(__DIR__."/../Controller.php");
 class SignupControllerGET extends Controller
 {
     private array $data;
+    private string $status;
+    private string $msg;
 
     public function __construct(array $data)
     {
         $this->data = $data;
+        $this->status = $data["flash"]["status"] ?? "failed";
+        $this->msg = $data["flash"]["msg"] ?? "";
     }
 
     public function index()
     {
-        $this->view("signup.php", ["errors" => []]);
+        $this->view("signup.php", ["errors" => [], "status" => $this->status, "msg" => $this->msg]);
         exit();
     }
 }

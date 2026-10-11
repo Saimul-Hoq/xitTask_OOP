@@ -20,6 +20,10 @@ class Router
             [$folder, $class] = $this->routes[$path];
             $class = $class.$method;
             $data = ($method === "POST") ? array_merge($_POST, $_FILES) : $_GET;
+            if ($method === "GET" && isset($_SESSION["flash"])) {
+                $data["flash"] = $_SESSION["flash"];
+                unset($_SESSION["flash"]);
+            }
             $controller = new $class($data);
             $controller->index();
             

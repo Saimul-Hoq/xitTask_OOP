@@ -12,7 +12,7 @@
     </header>
 
     <main>
-
+        <?php include(__DIR__."/../includes/alert.php"); ?>
         <section id="profile" class="card">
             <h1 id="mainHeading">Account Settings</h1>
             <div class="side-panel">
@@ -83,5 +83,6 @@
     </main>
     <script src="/projects/xitTask_OOP/js/mode.js"></script>
     <script src="/projects/xitTask_OOP/js/navbar.js"></script>
+    <script src="/projects/xitTask_OOP/js/alert.js"></script>
 </body>
 </html>

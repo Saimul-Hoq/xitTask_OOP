@@ -39,7 +39,7 @@ class SignupControllerPOST extends Controller
     public function index()
     {
         if(!$this->model->verifyDbConnection()){
-            $this->fail(true);
+            $this->dbFail();
         }
 
         if($this->isEmpty()){
@@ -67,7 +67,7 @@ class SignupControllerPOST extends Controller
         $check = $this->model->createSignupRequest( $this->id,  $this->email,  $this->password,  $this->name,  $this->mobile,  $this->address,  $this->avatarFilename,  $this->role);
 
         if($check === false){
-            $this->fail(true);
+            $this->dbFail();
         }
         else{
             $this->success();
@@ -79,7 +79,7 @@ class SignupControllerPOST extends Controller
     {
         $checkEmail = $this->model->emailExists($this->email);
         if($checkEmail === false){
-            $this->fail(true);
+            $this->dbFail();
         }
         elseif($checkEmail){
             $this->errors["email"] = "This email is already in use";
@@ -88,7 +88,7 @@ class SignupControllerPOST extends Controller
 
         $checkMobile = $this->model->mobileExists($this->mobile);
         if($checkMobile === false){
-            $this->fail(true);
+            $this->dbFail();
         }
         elseif($checkMobile){
             $this->errors["mobile"] = "This number is already in use";
@@ -213,22 +213,22 @@ class SignupControllerPOST extends Controller
 
     private function success()
     {
-        $this->view("signup.php", ["errors" => [], "success" => true]);
+        $this->flash(["status" => "success", "msg" => "Account registered Successfully. Before login wait for admin approval."]);
+
+        $this->redirect("/projects/xitTask_OOP/signup");
+        
         exit();
     }
 
-    private function fail($db = false) : void
+    private function fail() : void
     {   
-        if($db){
-            $this->errors["db"] = "Database Connection Failed. Please try again later";
-        }
         $this->old["email"] = $this->email;
         $this->old["name"] = $this->name;
         $this->old["mobile"] = $this->mobile;
         $this->old["address"] = $this->address;
 
 
-        $this->view("signup.php", ["errors" => $this->errors, "old" => $this->old, "success" => false]);
+        $this->view("signup.php", ["errors" => $this->errors, "old" => $this->old]);
         exit();
     }
 

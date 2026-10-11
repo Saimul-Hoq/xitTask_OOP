@@ -38,6 +38,16 @@
 
     /* Popup */
     --popup-bg: #6c6b6b;
+
+    /* Alert Error */
+    --alert-error-color: oklch(0.5829 0.1941 25.59);
+    --alert-error-bg: oklab(0.293744 0.0140048 0.00670698);
+    --alert-error-border: oklab(0.33146 0.0350121 0.0167675);
+
+    /* Alert Success */
+    --alert-success-color: oklch(0.6738 0.1885 145.43);
+    --alert-success-bg: oklab(0.301016 -0.0124174 0.00855658);
+    --alert-success-border: oklab(0.34964 -0.0310434 0.0213915);
 }
 
 
@@ -71,6 +81,14 @@
     --logo-text: #4a4a4a;
 
     --popup-bg: #706f6f;
+
+    --alert-error-color: oklch(0.5829 0.1941 25.59);
+    --alert-error-bg: oklab(0.966626 0.0140468 0.00672546);
+    --alert-error-border: oklab(0.916575 0.0350485 0.0167835);
+
+    --alert-success-color: oklch(0.6738 0.1885 145.43);
+    --alert-success-bg: oklab(0.973898 -0.0123755 0.00857506);
+    --alert-success-border: oklab(0.934755 -0.031007 0.0214075);
 }
 
 #brandLogo svg path:first-child {
@@ -111,6 +129,7 @@ header{
     justify-content: center;
 }
 main{
+    position: relative;
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -532,6 +551,7 @@ input:-webkit-autofill:active {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
+
 .btn-icon {
     display: inline-flex;
     align-items: center;
@@ -600,4 +620,57 @@ fieldset hr, form hr, .card hr, .navbar-container hr{
 
 .eye{
     color: rgb(145, 144, 144) !important;
+}
+
+.alert-error{
+    color: var(--alert-error-color) !important;
+    background-color: var(--alert-error-bg) !important;
+    border-color: var(--alert-error-border) !important;
+    display: flex !important;
+}
+
+.alert-success{
+    color: var(--alert-success-color) !important;
+    background-color: var(--alert-success-bg) !important;
+    border-color: var(--alert-success-border) !important;
+    display: flex !important;
+}
+
+.alert p{
+    margin-bottom: 0;
+    font-weight: 500;
+}
+.alert .btn-ghost{
+    color: inherit;
+}
+
+.alert .btn-ghost:hover{
+    cursor: pointer;
+    background-color: inherit;
+}
+.alert{
+    position: absolute;
+    top: 0;
+
+    width: 50vw;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    z-index: 10;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    display: none;
+
+}
+.alert-container{
+    display: flex;
+    gap: 1rem;
+}
+
+@media screen and (max-width: 991px) {
+    .alert{
+        width: 80vw;
+    }
 }

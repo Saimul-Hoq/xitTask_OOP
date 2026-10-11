@@ -26,15 +26,16 @@ class AdminRequestsControllerPOST extends Controller
 
         if(!$this->model->verifyDbConnection())
         {
-            $this->fail(true);
+            $this->dbFail();
         }
+
 
         if($this->action === "accept"){
 
             $this->acceptRequest();
         }
         else{
-            
+
             $this->rejectRequest();
         }
 
@@ -45,7 +46,7 @@ class AdminRequestsControllerPOST extends Controller
     private function acceptRequest()
     {
         if($this->model->approveRequest($this->userId, $this->adminId) === false){
-            $this->fail();
+            $this->dbFail();
         }
 
         return true;
@@ -54,7 +55,7 @@ class AdminRequestsControllerPOST extends Controller
     private function rejectRequest()
     {
         if($this->model->deleteRequest($this->userId) === false){
-            $this->fail();
+            $this->dbFail();
         }
 
         return true;
@@ -62,16 +63,15 @@ class AdminRequestsControllerPOST extends Controller
 
     private function success()
     {
-        $this->redirect("/projects/xitTask_OOP/admin/requests");
-        exit();
-    }
-
-    private function fail($db = false)
-    {   
-        if($db){
-            $this->errors["db"] = "Database Connection Failed. Please try again later";
+          
+        if($this->action === "accept"){
+            $this->flash(["status" => "success", "msg" => "Request accepted successfully"]);
+        }
+        else if($this->action === "reject"){
+            $this->flash(["status" => "success", "msg" => "Request rejected successfully"]);
         }
         $this->redirect("/projects/xitTask_OOP/admin/requests");
         exit();
     }
+
 }

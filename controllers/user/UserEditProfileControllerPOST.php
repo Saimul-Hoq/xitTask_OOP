@@ -9,14 +9,16 @@ class UserEditProfileControllerPOST extends Controller
     private ?string $currentPassword;
     private ?string $newPassword;
     private ?string $confirmPassword;
-    private string $name;
-    private string $mobile;
-    private string $address;
+    private ?string $name;
+    private ?string $mobile;
+    private ?string $address;
     private ?array $avatar;
+    private string $deleteAvatar;
     private string $avatarFilename;
     private array $errors;
     private array $old;
     private $model;
+    private $user;
 
     public function __construct(array $data)
     {
@@ -24,10 +26,11 @@ class UserEditProfileControllerPOST extends Controller
         $this->currentPassword = $data["currentPassword"] ?? null;
         $this->newPassword = $data["newPassword"] ?? null;
         $this->confirmPassword = $data["confirmPassword"] ?? null;
-        $this->name = $data["name"];
-        $this->mobile = $data["mobile"];
-        $this->address = $data["address"];
+        $this->name = $data["name"] ?? null;
+        $this->mobile = $data["mobile"] ?? null;
+        $this->address = $data["address"] ?? null;
         $this->avatar = $data["avatar"] ?? null;
+        $this->deleteAvatar = $data["deleteAvatar"] ?? "false";
         $this->avatarFilename = "default.png";
         $this->errors = [];
         $this->old = [];
@@ -40,6 +43,13 @@ class UserEditProfileControllerPOST extends Controller
 
         if(!$this->model->verifyDbConnection()){
             $this->fail(true);
+        }
+
+        $this->user = $this->getUser();
+
+        if($this->deleteAvatar === "true"){
+            $this->deleteAvatar();
+            $this->success();
         }
 
         if($this->isEmpty()){
@@ -62,6 +72,22 @@ class UserEditProfileControllerPOST extends Controller
         $this->updateMobile();
         $this->updateName();
         $this->updatePassword();
+    }
+
+    private function deleteAvatar()
+    {
+        if ($this->model->editAvatar($this->id, "default.png") === false) {
+            $this->fail(true);
+        }
+
+        $currentAvatarFilename = $this->user["avatar"];
+        if($currentAvatarFilename !== "default.png"){
+            $path = __DIR__ . "/../../uploads/" . $currentAvatarFilename;
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+        
     }
 
     private function updateAvatar()
@@ -290,7 +316,7 @@ class UserEditProfileControllerPOST extends Controller
     public function getUser()
     {
         $user = $this->model->getUser($this->id);
-        if($user === false || $user === null){
+        if($user===false || $user === null){
 
             $this->redirect("/projects/xitTask_OOP/logout");
             exit();
@@ -300,8 +326,7 @@ class UserEditProfileControllerPOST extends Controller
 
     private function success()
     {
-        $user = $this->getUser();
-        $this->view("userEditProfile.php", ["errors" => [], "success" => true, "user" => $user]);
+        $this->redirect("/projects/xitTask_OOP/user/editProfile");
         exit();
     }
 

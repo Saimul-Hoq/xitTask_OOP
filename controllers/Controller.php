@@ -20,4 +20,12 @@ class Controller
             exit();
         }
     }
+
+    protected function requireAdmin(): void
+    {
+        $this->requireLogin();
+        if ((int)($_SESSION["role"] ?? 0) !== 1) {
+            $this->redirect('/projects/xitTask_OOP/');
+        }
+    }
 }

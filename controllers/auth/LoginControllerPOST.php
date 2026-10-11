@@ -45,7 +45,7 @@ class LoginControllerPOST extends Controller
             $this->fail();
         }
 
-        $user = $this->model->getUser($this->email);
+        $user = $this->model->getUserbyEmail($this->email);
         if($user === false)
         {
             $this->fail(true);
@@ -89,7 +89,7 @@ class LoginControllerPOST extends Controller
     }
 
     private function success(){
-        $user = $this->model->getUser($this->email);
+        $user = $this->model->getUserbyEmail($this->email);
         
         session_regenerate_id(true);
         $_SESSION["id"] = $user["id"];
@@ -101,7 +101,7 @@ class LoginControllerPOST extends Controller
             exit();
         }
         else{
-            $this->redirect("/projects/xitTask_OOP/admin");
+            $this->redirect("/projects/xitTask_OOP/admin/userList");
             exit();
         }
     }

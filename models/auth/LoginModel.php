@@ -6,7 +6,7 @@ class LoginModel extends Model
 {
    
 
-    public function getUser(string $email){
+    public function getUserbyEmail(string $email){
 
         $stmt = null;
         try{

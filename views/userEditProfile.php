@@ -44,6 +44,7 @@
                             <img src="/projects/xitTask_OOP/uploads/<?= htmlspecialchars($user["avatar"]) ?>" alt="Profile Picture">
                         </div>
                         <div class="change-avatar-part info-field">
+
                             <button type="button" onclick="openEditAvatar(this)" id="edit-avatar-btn" class="btn-icon">Change Avatar</button>
                             
                             <input disabled name="avatar" id="edit-avatar" type="file" accept="image/*" class="input<?= errClass($errors, 'avatar') ?> hidden" placeholder="Enter your profile photo" />
@@ -51,7 +52,7 @@
                             <p id="edit-avatar-error"><?php echo htmlspecialchars($errors["avatar"] ?? "") ?></p>
                         </div>
                         
-                        <button type="submit" form="delete-avatar-form" id="delete-avatar-btn" class="btn-icon">Delete Avatar</button>
+                        <button name="deleteAvatar" value="true" type="submit" form="delete-avatar-form" id="delete-avatar-btn" class="btn-icon">Delete Avatar</button>
                         
                     </div>
 
@@ -152,10 +153,8 @@
 
             </form>
 
-            <form id="delete-avatar-form" action="/projects/xitTask_OOP/" method="POST">
-                <input type="hidden" name="action" value="deleteAvatar">
-                <input type="hidden" name="controller" value="user">
-            </form>
+            <form id="delete-avatar-form" action="/projects/xitTask_OOP/user/editProfile" method="POST"></form>
+            
         </section>
 
         
